@@ -1,0 +1,82 @@
+enum CellState {
+    Hidden,
+    Visible,
+    Flagged
+}
+
+class GridCell {
+    init(x, y) {
+        this.x = x
+        this.y = y
+
+        this.state = CellState.Hidden
+        this.mine = false
+        this.value = 0
+    }
+}
+
+class Screen {
+    init(grid) {
+     this.grid = grid
+    }
+
+    update() {
+        this.grid.forEach(cell => {
+            renderCharacterBasedOnStateAndValue()
+        })
+    }
+}
+
+class Game {
+    init(width, height, mines) {
+        gridSize = width*height
+        this.grid = Array(GridCell(x, y)*gridSize)
+        this.mines = mines
+
+        randomlyGenerateMines()
+        calculateCellValues()
+        
+        this.screen = Screen(this.grid)
+        this.screen.init()
+    }
+
+    clickCell(x, y) {
+        cell = grid[x, y]
+        if (cell.mine) {
+            lose()
+        } else {
+            cell.state = CellState.Visible
+            if (cell.value == 0) {
+                recursivelyPopCells()
+            }
+        }
+
+        this.screen.update()
+    }
+
+    flagCell(x, y) {
+        cell = grid[x, y]
+        if (cell.state == CellState.Flagged) {
+            CellState.state == CellState.Hidden
+        } else {
+            cell.state == CellState.Flagged
+        }
+
+        this.screen.update()
+    }
+
+    getEmptyCells() {
+        return calculateEmptyCells()
+    }
+}
+
+game = new Game(100, 100, 1000)
+game.init()
+
+emptyCells = game.calculateEmptyCells()
+
+while (emptyCells != 0) {
+    input = parse(input())
+    game[input.action](input.x, input.y)
+    emptyCells = game.calculateEmptyCells()
+}
