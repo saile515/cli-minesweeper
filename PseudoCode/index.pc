@@ -57,9 +57,9 @@ class Game {
     flagCell(x, y) {
         cell = grid[x, y]
         if (cell.state == CellState.Flagged) {
-            CellState.state == CellState.Hidden
+            cell.state = CellState.Hidden
         } else {
-            cell.state == CellState.Flagged
+            cell.state = CellState.Flagged
         }
 
         this.screen.update()
