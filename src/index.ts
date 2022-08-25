@@ -14,7 +14,6 @@ export class Game {
 	screen: Screen;
 
 	constructor(width: number, height: number, mines: number) {
-		const gridSize = width * height;
 		this.width = width;
 		this.height = height;
 		this.grid = [];
@@ -33,24 +32,29 @@ export class Game {
 
 		let emptyCells = this.calculateEmptyCells();
 
+		// Main input loop
 		while (emptyCells != 0 && !this.completed) {
 			const input: string[] = prompt()("Input (x, y, cmd): ").toString().split(" ");
 
 			const x = parseInt(input[0]);
 			const y = parseInt(input[1]);
-			const func = input[2] == "flag" ? "flagCell" : input[2] == "pop" ? "clickCell" : null;
+			const cmd = input[2] == "flag" ? "flagCell" : input[2] == "pop" ? "clickCell" : null;
 
-			if (!func) {
+			// Invalid command
+			if (!cmd) {
 				console.log("Faulty input! Try again.");
 				continue;
 			}
 
-			this[func!](x, y);
+			this[cmd!](x, y);
+
 			emptyCells = this.calculateEmptyCells();
+
 			if (emptyCells == 0) {
 				console.log("You win!");
 				this.completed = true;
 			}
+
 			if (!this.completed) this.screen.update();
 		}
 	}
@@ -58,6 +62,7 @@ export class Game {
 	clickCell(x: number, y: number) {
 		const cell = this.getCell(x, y);
 
+		// Place mines
 		if (!this.minesPlaced) {
 			const neighbors = this.getNeighbors(cell, true);
 			this.placeMines(neighbors);
@@ -88,7 +93,7 @@ export class Game {
 	}
 
 	flagCell(x: number, y: number) {
-		const cell = this.grid.find((cell) => cell.x == x && cell.y == y)!;
+		const cell = this.getCell(x, y);
 		if (!cell) {
 			console.log("No cell with those coordinates exist! Try again.");
 			return;
@@ -112,6 +117,8 @@ export class Game {
 		const y = cell.y;
 
 		const cells: GridCell[] = [];
+
+		// Get cells in a 3x3 area (or smaller if near borders)
 		for (let xCoord = x > 1 ? -1 : 0; xCoord <= (x < this.width ? 1 : 0); xCoord++) {
 			for (let yCoord = y > 1 ? -1 : 0; yCoord <= (y < this.height ? 1 : 0); yCoord++) {
 				if (x == xCoord && y == yCoord && !includeSelf) continue;
@@ -129,19 +136,25 @@ export class Game {
 
 		neighbors.forEach((item) => {
 			if (item.state != CellState.Hidden) return;
+
 			item.state = CellState.Visible;
+
 			if (item.value == 0 && item.state) this.popNeighbors(item);
 		});
 	}
 
 	placeMines(avoid?: GridCell[]) {
 		const nonMineCells = this.grid.filter((cell) => !cell.mine);
-		if (avoid)
+
+		// Filter away avoided sells from cell pool
+		if (avoid) {
 			for (let i = 0; i < avoid.length; i++) {
 				const index = nonMineCells.indexOf(avoid[i]);
 				nonMineCells.splice(index, 1);
 			}
+		}
 
+		// Place mines
 		for (let i = 0; i < this.mines; i++) {
 			const random = Math.floor(Math.random() * nonMineCells.length);
 			nonMineCells[random].mine = true;

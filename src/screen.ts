@@ -12,6 +12,8 @@ export default class Screen {
 	update() {
 		console.clear();
 		let output: string[] = [];
+
+		// Select character(s) depending on state and value
 		this.game.grid.forEach((cell) => {
 			switch (cell.state) {
 				case CellState.Visible:
@@ -26,6 +28,7 @@ export default class Screen {
 			}
 		});
 
+		// A lot of string manipulation
 		let outputStr = "     ";
 		for (let i = 1; i <= this.game.width; i++) {
 			outputStr += i >= 10 ? "" : " ";
