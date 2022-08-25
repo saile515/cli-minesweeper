@@ -4,6 +4,7 @@
 
 ```console
     npm i
+    npm run build
     npm start (width?) (height?) (mines?)
 ```
 

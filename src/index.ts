@@ -46,7 +46,7 @@ export class Game {
 				continue;
 			}
 
-			this[cmd!](x, y);
+			const success = this[cmd!](x, y);
 
 			emptyCells = this.calculateEmptyCells();
 
@@ -55,7 +55,7 @@ export class Game {
 				this.completed = true;
 			}
 
-			if (!this.completed) this.screen.update();
+			if (!this.completed && success) this.screen.update();
 		}
 	}
 
@@ -71,18 +71,18 @@ export class Game {
 
 		if (!cell) {
 			console.log("No cell with those coordinates exist! Try again.");
-			return;
+			return false;
 		}
 
 		if (cell.state != CellState.Hidden) {
 			console.log("Cell can't be popped! Try again.");
-			return;
+			return false;
 		}
 
 		if (cell.mine) {
 			console.log("You lose!");
 			this.completed = true;
-			return;
+			return true;
 		} else {
 			cell.state = CellState.Visible;
 		}
@@ -90,13 +90,15 @@ export class Game {
 		if (cell.value == 0) {
 			this.popNeighbors(cell);
 		}
+
+		return true;
 	}
 
 	flagCell(x: number, y: number) {
 		const cell = this.getCell(x, y);
 		if (!cell) {
 			console.log("No cell with those coordinates exist! Try again.");
-			return;
+			return false;
 		}
 
 		if (cell.state == CellState.Flagged) {
@@ -104,8 +106,11 @@ export class Game {
 		} else if (cell.state == CellState.Hidden) {
 			cell.state = CellState.Flagged;
 		} else {
-			console.log("Cell can't be flagged, as it is already visible!");
+			console.log("Flag can't be placed, as cell is already visible!");
+			return false;
 		}
+
+		return true;
 	}
 
 	getCell(x: number, y: number) {

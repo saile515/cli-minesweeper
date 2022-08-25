@@ -1,5 +1,4 @@
-import GridCell, { CellState } from "./gridCell";
-
+import { CellState } from "./gridCell";
 import { Game } from ".";
 
 export default class Screen {
@@ -36,6 +35,7 @@ export default class Screen {
 			outputStr += " ";
 		}
 
+		outputStr += "      I='s left: " + this.game.calculateEmptyCells();
 		outputStr += "\n     ";
 
 		for (let i = 1; i <= this.game.width; i++) {
