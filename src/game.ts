@@ -40,7 +40,9 @@ export class Game {
 	}
 
 	update() {
-		const input: string[] = prompt()("Input (x, y, cmd): ").toString().split(" ");
+		const input: string[] = prompt()("Input (x, y, cmd): ")
+			.toString()
+			.split(/[\s\,]+/);
 
 		const x = parseInt(input[0]);
 		const y = parseInt(input[1]);

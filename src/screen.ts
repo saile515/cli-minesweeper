@@ -3,6 +3,7 @@ import { Game } from "./game";
 
 export default class Screen {
 	game: Game;
+
 	constructor(game: Game) {
 		this.game = game;
 		this.update();
@@ -35,7 +36,8 @@ export default class Screen {
 			outputStr += " ";
 		}
 
-		if (this.game.minesPlaced) outputStr += "      Empty cells left: " + this.game.emptyCells;
+		outputStr += " x";
+		if (this.game.minesPlaced) outputStr += "    Empty cells left: " + this.game.emptyCells;
 		outputStr += "\n     ";
 
 		for (let i = 1; i <= this.game.width; i++) {
@@ -50,6 +52,8 @@ export default class Screen {
 				outputStr += output[i * this.game.width + l];
 			}
 		}
+
+		outputStr += "\n y";
 
 		console.log(outputStr);
 	}
