@@ -17,7 +17,7 @@ class GridCell {
 
 class Screen {
     init(grid) {
-     this.grid = grid
+        this.grid = grid
     }
 
     update() {
