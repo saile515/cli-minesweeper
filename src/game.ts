@@ -44,7 +44,7 @@ export class Game {
 
 		const x = parseInt(input[0]);
 		const y = parseInt(input[1]);
-		const cmd = input[2] == "flag" ? "flagCell" : input[2] == "pop" ? "popCell" : null;
+		const cmd = input[2] == "flag" || input[2] == "f" ? "flagCell" : input[2] == "pop" || input[2] == "p" ? "popCell" : null;
 
 		// Invalid command
 		if (!cmd) {
