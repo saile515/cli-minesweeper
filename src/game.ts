@@ -44,7 +44,7 @@ export class Game {
 
 		const x = parseInt(input[0]);
 		const y = parseInt(input[1]);
-		const cmd = input[2] == "flag" ? "flagCell" : input[2] == "pop" ? "clickCell" : null;
+		const cmd = input[2] == "flag" ? "flagCell" : input[2] == "pop" ? "popCell" : null;
 
 		// Invalid command
 		if (!cmd) {
@@ -64,7 +64,7 @@ export class Game {
 		if (!this.completed && success) this.screen.update();
 	}
 
-	clickCell(x: number, y: number) {
+	popCell(x: number, y: number) {
 		const cell = this.getCell(x, y);
 
 		// Place mines
